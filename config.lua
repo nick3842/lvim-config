@@ -1,7 +1,3 @@
---[[
- THESE ARE EXAMPLE CONFIGS FEEL FREE TO CHANGE TO WHATEVER YOU WANT
- `lvim` is the global options object
-]]
 -- vim options
 vim.opt.shiftwidth = 2
 vim.opt.tabstop = 2
@@ -14,6 +10,12 @@ vim.opt.timeoutlen = 1000
 
 vim.cmd(
   [[autocmd BufReadPost * if @% !~# '\.git[\/\\]COMMIT_EDITMSG$' && line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif]])
+
+-- vim.g.python3_host_prog = '/Users/nrs/Library/Python/3.9/bin'
+vim.g.python3_host_prog = '/usr/bin/python3'
+vim.list_extend(lvim.lsp.automatic_configuration.skipped_servers, { "pyright" })
+vim.list_extend(lvim.lsp.automatic_configuration.skipped_servers, { "pylyzer" })
+require("lvim.lsp.manager").setup("pyright", { root_dir = require("lspconfig").util.root_pattern(".git") })
 
 -- general
 lvim.log.level = "info"
@@ -45,6 +47,12 @@ lvim.keys.normal_mode["<C-h>"] = "<C-w>h"
 lvim.keys.normal_mode["<C-j>"] = "<C-w>j"
 lvim.keys.normal_mode["<C-k>"] = "<C-w>k"
 lvim.keys.normal_mode["<C-l>"] = "<C-w>l"
+
+lvim.keys.normal_mode["<C-h>"] = "<CMD>NavigatorLeft<CR>"
+lvim.keys.normal_mode["<C-j>"] = "<CMD>NavigatorDown<CR>"
+lvim.keys.normal_mode["<C-k>"] = "<CMD>NavigatorUp<CR>"
+lvim.keys.normal_mode["<C-l>"] = "<CMD>NavigatorRight<CR>"
+
 -- try to fix tmux conflict thing
 lvim.keys.insert_mode["<A-j>"] = false
 lvim.keys.insert_mode["<A-k>"] = false
@@ -55,6 +63,19 @@ lvim.keys.visual_block_mode["<A-k>"] = false
 lvim.keys.visual_block_mode["J"] = false
 lvim.keys.visual_block_mode["K"] = false
 
+lvim.keys.normal_mode['gD'] = '<CMD>Glance definitions<CR>'
+lvim.keys.normal_mode['gR'] = '<CMD>Glance references<CR>'
+lvim.keys.normal_mode['gY'] = '<CMD>Glance type_definitions<CR>'
+lvim.keys.normal_mode['gM'] = '<CMD>Glance implementations<CR>'
+
+lvim.builtin.lualine.style = "default"
+lvim.builtin.lualine.sections.lualine_c = { 'searchcount' }
+lvim.builtin.lualine.sections.lualine_x = { 'diagnostics' }
+lvim.builtin.lualine.sections.lualine_y = { 'diff' }
+lvim.builtin.lualine.sections.lualine_z = { 'windows' }
+local components = require('lvim.core.lualine.components')
+lvim.builtin.lualine.sections.lualine_b = { components.branch }
+
 -- lvim.keys.normal_mode["<S-l>"] = ":BufferLineCycleNext<CR>"
 -- lvim.keys.normal_mode["<S-h>"] = ":BufferLineCyclePrev<CR>"
 
@@ -63,7 +84,11 @@ lvim.keys.visual_block_mode["K"] = false
 -- lvim.builtin.which_key.mappings["P"] = { "<cmd>Telescope projects<CR>", "Projects" }
 
 -- -- Change theme settings
-lvim.colorscheme = "kanagawa"
+lvim.colorscheme = "sonokai"
+vim.g.sonokai_style = 'espresso'
+vim.g.sonokai_enable_italic = '1'
+vim.g.sonokai_diagnostic_text_highlight = '1'
+vim.g.sonokai_diagnostic_virtual_text = 'colored'
 
 lvim.builtin.alpha.active = true
 lvim.builtin.alpha.mode = "dashboard"
@@ -178,6 +203,7 @@ lvim.plugins = {
       })
     end
   },
+  { "sainnhe/sonokai" },
   { "tpope/vim-vinegar" },
   { "tpope/vim-repeat" },
   { "tpope/vim-abolish" },
@@ -189,7 +215,15 @@ lvim.plugins = {
       require("nvim-surround").setup({})
     end
   },
-  { "numToStr/Navigator.nvim" },
+  {
+    "numToStr/Navigator.nvim",
+    config = function()
+      require("Navigator").setup({})
+    end
+  },
+  {
+    'nvim-treesitter/nvim-treesitter-context'
+  }
 
 }
 
