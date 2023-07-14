@@ -74,7 +74,7 @@ lvim.builtin.lualine.sections.lualine_x = { 'diagnostics' }
 lvim.builtin.lualine.sections.lualine_y = { 'diff' }
 lvim.builtin.lualine.sections.lualine_z = { 'windows' }
 local components = require('lvim.core.lualine.components')
-lvim.builtin.lualine.sections.lualine_b = { components.branch }
+lvim.builtin.lualine.sections.lualine_b = { 'branch' }
 
 -- lvim.keys.normal_mode["<S-l>"] = ":BufferLineCycleNext<CR>"
 -- lvim.keys.normal_mode["<S-h>"] = ":BufferLineCyclePrev<CR>"
