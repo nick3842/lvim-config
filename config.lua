@@ -40,7 +40,7 @@ lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
 lvim.keys.normal_mode["<leader>v"] = ":vsp<CR><C-w>l"
 -- lvim.keys.normal_mode["<leader>h"] = "<cmd>nohlsearch<CR>"
 lvim.keys.normal_mode["<C-p>"] = ":Telescope find_files<CR>"
-lvim.keys.normal_mode["<leader>f"] = ":Telescope live_grep<CR>"
+lvim.keys.normal_mode["<leader>lg"] = ":Telescope live_grep<CR>"
 lvim.keys.normal_mode["<leader>a"] = "<cmd>lua vim.diagnostic.open_float()<CR>"
 
 lvim.keys.normal_mode["<C-h>"] = "<C-w>h"
