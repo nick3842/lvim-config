@@ -21,7 +21,7 @@ require("lvim.lsp.manager").setup("pyright", { root_dir = require("lspconfig").u
 lvim.log.level = "info"
 lvim.format_on_save = {
   enabled = true,
-  pattern = "*.lua",
+  pattern = "*.go",
   timeout = 1000,
 }
 -- to disable icons and use a minimalist setup, uncomment the following
@@ -35,7 +35,6 @@ lvim.builtin.breadcrumbs.active = false
 
 -- keymappings <https://www.lunarvim.org/docs/configuration/keybindings>
 lvim.leader = "space"
--- add your own keymapping
 lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
 lvim.keys.normal_mode["<leader>v"] = ":vsp<CR><C-w>l"
 -- lvim.keys.normal_mode["<leader>h"] = "<cmd>nohlsearch<CR>"
@@ -75,6 +74,7 @@ lvim.builtin.lualine.sections.lualine_y = { 'diff' }
 lvim.builtin.lualine.sections.lualine_z = { 'windows' }
 local components = require('lvim.core.lualine.components')
 lvim.builtin.lualine.sections.lualine_b = { 'branch' }
+lvim.builtin.illuminate.active = false
 
 -- lvim.keys.normal_mode["<S-l>"] = ":BufferLineCycleNext<CR>"
 -- lvim.keys.normal_mode["<S-h>"] = ":BufferLineCyclePrev<CR>"
@@ -86,9 +86,13 @@ lvim.builtin.lualine.sections.lualine_b = { 'branch' }
 -- -- Change theme settings
 lvim.colorscheme = "sonokai"
 vim.g.sonokai_style = 'espresso'
+vim.g.sonokai_current_word = 'bold'
 vim.g.sonokai_enable_italic = '1'
 vim.g.sonokai_diagnostic_text_highlight = '1'
 vim.g.sonokai_diagnostic_virtual_text = 'colored'
+vim.cmd(
+  [[let g:sonokai_colors_override = { 'bg_green': ['#85d3f2','110'], 'bg_blue': ['#a7df78', '107'], 'bg3': ['#0a455c', '1'] } ]]
+)
 
 lvim.builtin.alpha.active = true
 lvim.builtin.alpha.mode = "dashboard"
