@@ -84,7 +84,9 @@ lvim.builtin.illuminate.active = false
 -- lvim.builtin.which_key.mappings["P"] = { "<cmd>Telescope projects<CR>", "Projects" }
 
 -- -- Change theme settings
-lvim.colorscheme = "sonokai"
+-- lvim.colorscheme = "nordic"
+lvim.colorscheme = "rose-pine"
+
 vim.g.sonokai_style = 'espresso'
 vim.g.sonokai_current_word = 'bold'
 vim.g.sonokai_enable_italic = '1'
@@ -208,8 +210,40 @@ lvim.plugins = {
     end
   },
   { "sainnhe/sonokai" },
+  { "rose-pine/neovim", name='rose-pine', config = function()
+    require('rose-pine').setup({
+      variant = 'moon',
+      -- disable_background = 'true'
+      groups = {
+        -- background = '#181a1f',
+      },
+      highlight_groups = {
+        CursorLine = { bg = '#354361' },
+        StatusLine = { fg = "love", bg = "love", blend = 10 },
+        StatusLineNC = { fg = "subtle", bg = "surface" },
+        TelescopeBorder = { fg = "highlight_high", bg = "none" },
+        TelescopeNormal = { bg = "none" },
+        TelescopePromptNormal = { bg = "base" },
+        TelescopeResultsNormal = { fg = "subtle", bg = "none" },
+        TelescopeSelection = { fg = "text", bg = "base" },
+        TelescopeSelectionCaret = { fg = "rose", bg = "rose" },
+      }
+    })
+  end
+  },
   { "tpope/vim-vinegar" },
   { "tpope/vim-repeat" },
+  { "AlexvZyl/nordic.nvim", lazy = false, priority = 1000,
+    config = function()
+      require('nordic').setup({
+        reduced_blue = false,
+        cursorline = {
+          theme = 'light'
+        }
+      })
+    end,
+  },
+  { "folke/tokyonight.nvim" },
   { "tpope/vim-abolish" },
   { 'jdhao/whitespace.nvim', event = 'VimEnter' },
   { "tpope/vim-fugitive" },
