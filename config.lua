@@ -1,9 +1,10 @@
 -- vim options
 vim.opt.shiftwidth = 2
 vim.opt.tabstop = 2
-vim.opt.relativenumber = true
+vim.opt.relativenumber = false
+vim.opt.number = false
 vim.opt.colorcolumn = "80"
-vim.opt.wrap = true
+vim.opt.wrap = false
 vim.opt.foldmethod = 'indent'
 vim.opt.foldlevel = 20
 vim.opt.timeoutlen = 1000
@@ -11,7 +12,6 @@ vim.opt.timeoutlen = 1000
 vim.cmd(
   [[autocmd BufReadPost * if @% !~# '\.git[\/\\]COMMIT_EDITMSG$' && line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif]])
 
--- vim.g.python3_host_prog = '/Users/nrs/Library/Python/3.9/bin'
 vim.g.python3_host_prog = '/usr/bin/python3'
 vim.list_extend(lvim.lsp.automatic_configuration.skipped_servers, { "pyright" })
 vim.list_extend(lvim.lsp.automatic_configuration.skipped_servers, { "pylyzer" })
@@ -24,7 +24,8 @@ lvim.format_on_save = {
   pattern = "*.go",
   timeout = 1000,
 }
--- to disable icons and use a minimalist setup, uncomment the following
+vim.opt.guicursor="n-v-c-i:block"
+
 lvim.use_icons = true
 lvim.builtin.bufferline.active = false
 lvim.builtin.project.active = false
@@ -37,6 +38,7 @@ lvim.builtin.breadcrumbs.active = false
 lvim.leader = "space"
 lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
 lvim.keys.normal_mode["<leader>v"] = ":vsp<CR><C-w>l"
+lvim.keys.normal_mode["<leader>p"] = "$p"
 -- lvim.keys.normal_mode["<leader>h"] = "<cmd>nohlsearch<CR>"
 lvim.keys.normal_mode["<C-p>"] = ":Telescope find_files<CR>"
 lvim.keys.normal_mode["<leader>lg"] = ":Telescope live_grep<CR>"
@@ -52,6 +54,7 @@ lvim.keys.normal_mode["<C-j>"] = "<CMD>NavigatorDown<CR>"
 lvim.keys.normal_mode["<C-k>"] = "<CMD>NavigatorUp<CR>"
 lvim.keys.normal_mode["<C-l>"] = "<CMD>NavigatorRight<CR>"
 
+lvim.builtin.cmp.experimental.ghost_text = true
 -- try to fix tmux conflict thing
 lvim.keys.insert_mode["<A-j>"] = false
 lvim.keys.insert_mode["<A-k>"] = false
@@ -72,29 +75,10 @@ lvim.builtin.lualine.sections.lualine_c = { 'searchcount' }
 lvim.builtin.lualine.sections.lualine_x = { 'diagnostics' }
 lvim.builtin.lualine.sections.lualine_y = { 'diff' }
 lvim.builtin.lualine.sections.lualine_z = { 'windows' }
-local components = require('lvim.core.lualine.components')
 lvim.builtin.lualine.sections.lualine_b = { 'branch' }
 lvim.builtin.illuminate.active = false
 
--- lvim.keys.normal_mode["<S-l>"] = ":BufferLineCycleNext<CR>"
--- lvim.keys.normal_mode["<S-h>"] = ":BufferLineCyclePrev<CR>"
-
--- -- Use which-key to add extra bindings with the leader-key prefix
--- lvim.builtin.which_key.mappings["W"] = { "<cmd>noautocmd w<cr>", "Save without formatting" }
--- lvim.builtin.which_key.mappings["P"] = { "<cmd>Telescope projects<CR>", "Projects" }
-
--- -- Change theme settings
--- lvim.colorscheme = "nordic"
 lvim.colorscheme = "rose-pine"
-
-vim.g.sonokai_style = 'espresso'
-vim.g.sonokai_current_word = 'bold'
-vim.g.sonokai_enable_italic = '1'
-vim.g.sonokai_diagnostic_text_highlight = '1'
-vim.g.sonokai_diagnostic_virtual_text = 'colored'
-vim.cmd(
-  [[let g:sonokai_colors_override = { 'bg_green': ['#85d3f2','110'], 'bg_blue': ['#a7df78', '107'], 'bg3': ['#0a455c', '1'] } ]]
-)
 
 lvim.builtin.alpha.active = true
 lvim.builtin.alpha.mode = "dashboard"
@@ -106,116 +90,17 @@ lvim.builtin.nvimtree.setup.renderer.icons.show.git = false
 -- Automatically install missing parsers when entering buffer
 lvim.builtin.treesitter.auto_install = true
 
--- lvim.builtin.treesitter.ignore_install = { "haskell" }
+vim.api.nvim_set_hl(0, "NormalFloat", { bg = "#1F1F28", blend = 0})
+vim.api.nvim_set_hl(0, "FloatBorder", { bg = "#1F1F28"})
+vim.api.nvim_set_hl(0, "FloatTitle", { bg = "none"})
 
--- -- always installed on startup, useful for parsers without a strict filetype
--- lvim.builtin.treesitter.ensure_installed = { "comment", "markdown_inline", "regex" }
-
--- -- generic LSP settings <https://www.lunarvim.org/docs/languages#lsp-support>
-
--- --- disable automatic installation of servers
--- lvim.lsp.installer.setup.automatic_installation = false
-
--- ---configure a server manually. IMPORTANT: Requires `:LvimCacheReset` to take effect
--- ---see the full default list `:lua =lvim.lsp.automatic_configuration.skipped_servers`
--- vim.list_extend(lvim.lsp.automatic_configuration.skipped_servers, { "pyright" })
--- local opts = {} -- check the lspconfig documentation for a list of all possible options
--- require("lvim.lsp.manager").setup("pyright", opts)
-
--- ---remove a server from the skipped list, e.g. eslint, or emmet_ls. IMPORTANT: Requires `:LvimCacheReset` to take effect
--- ---`:LvimInfo` lists which server(s) are skipped for the current filetype
--- lvim.lsp.automatic_configuration.skipped_servers = vim.tbl_filter(function(server)
---   return server ~= "emmet_ls"
--- end, lvim.lsp.automatic_configuration.skipped_servers)
-
--- -- you can set a custom on_attach function that will be used for all the language servers
--- -- See <https://github.com/neovim/nvim-lspconfig#keybindings-and-completion>
--- lvim.lsp.on_attach_callback = function(client, bufnr)
---   local function buf_set_option(...)
---     vim.api.nvim_buf_set_option(bufnr, ...)
---   end
---   --Enable completion triggered by <c-x><c-o>
---   buf_set_option("omnifunc", "v:lua.vim.lsp.omnifunc")
--- end
-
--- -- linters, formatters and code actions <https://www.lunarvim.org/docs/languages#lintingformatting>
--- local formatters = require "lvim.lsp.null-ls.formatters"
--- formatters.setup {
---   { command = "stylua" },
---   {
---     command = "prettier",
---     extra_args = { "--print-width", "100" },
---     filetypes = { "typescript", "typescriptreact" },
---   },
--- }
--- local linters = require "lvim.lsp.null-ls.linters"
--- linters.setup {
---   { command = "flake8", filetypes = { "python" } },
---   {
---     command = "shellcheck",
---     args = { "--severity", "warning" },
---   },
--- }
--- local code_actions = require "lvim.lsp.null-ls.code_actions"
--- code_actions.setup {
---   {
---     exe = "eslint",
---     filetypes = { "typescript", "typescriptreact" },
---   },
--- }
-
--- -- Additional Plugins <https://www.lunarvim.org/docs/plugins#user-plugins>
 lvim.plugins = {
-  {
-    "rebelot/kanagawa.nvim",
-    config = function()
-      require('kanagawa').setup({
-        compile = false,
-        undercurl = true,
-        commentStyle = { italic = true },
-        functionStyle = {},
-        keywordStyle = { italic = true },
-        statementStyle = { bold = true },
-        typeStyle = {},
-        transparent = false,
-        dimInactive = false,
-        terminalColors = true,
-        colors = {
-          palette = {},
-          theme = {
-            all = {
-              ui = {
-                bg_gutter = "none",
-                bg_visual = "#43242B",
-              }
-            },
-            wave = {},
-            lotus = {},
-            dragon = {},
-          },
-        },
-        overrides = function(colors)
-          return {
-            CursorLineNr = { bold = false },
-            Todo = { bg = "#FFA066", }
-          }
-        end,
-        theme = "wave", -- Load "wave" theme when 'background' option is not set
-        background = {
-          -- map the value of 'background' option to a theme
-          dark = "wave", -- try "dragon" !
-          light = "lotus"
-        },
-      })
-    end
-  },
-  { "sainnhe/sonokai" },
   { "rose-pine/neovim", name='rose-pine', config = function()
     require('rose-pine').setup({
       variant = 'moon',
-      -- disable_background = 'true'
+      -- disable_background = 'true',
       groups = {
-        -- background = '#181a1f',
+        background = '#1B1B1B',
       },
       highlight_groups = {
         CursorLine = { bg = '#354361' },
@@ -233,17 +118,6 @@ lvim.plugins = {
   },
   { "tpope/vim-vinegar" },
   { "tpope/vim-repeat" },
-  { "AlexvZyl/nordic.nvim", lazy = false, priority = 1000,
-    config = function()
-      require('nordic').setup({
-        reduced_blue = false,
-        cursorline = {
-          theme = 'light'
-        }
-      })
-    end,
-  },
-  { "folke/tokyonight.nvim" },
   { "tpope/vim-abolish" },
   { 'jdhao/whitespace.nvim', event = 'VimEnter' },
   { "tpope/vim-fugitive" },
@@ -260,7 +134,22 @@ lvim.plugins = {
     end
   },
   {
-    'nvim-treesitter/nvim-treesitter-context'
+    'nvim-treesitter/nvim-treesitter-context', config = function()
+      require'treesitter-context'.setup{
+        enable = true, -- Enable this plugin (Can be enabled/disabled later via commands)
+        max_lines = 0, -- How many lines the window should span. Values <= 0 mean no limit.
+        min_window_height = 0, -- Minimum editor window height to enable context. Values <= 0 mean no limit.
+        line_numbers = true,
+        multiline_threshold = 20, -- Maximum number of lines to show for a single context
+        trim_scope = 'outer', -- Which context lines to discard if `max_lines` is exceeded. Choices: 'inner', 'outer'
+        mode = 'cursor',  -- Line used to calculate context. Choices: 'cursor', 'topline'
+        -- Separator between context and content. Should be a single character string, like '-'.
+        -- When separator is set, the context will only show up when there are at least 2 lines above cursorline.
+        separator = nil,
+        zindex = 20, -- The Z-index of the context window
+        on_attach = nil, -- (fun(buf: integer): boolean) return false to disable attaching
+      }
+    end
   }
 
 }
