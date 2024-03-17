@@ -44,6 +44,8 @@ lvim.keys.normal_mode["<C-p>"] = ":Telescope find_files<CR>"
 lvim.keys.normal_mode["<leader>lg"] = ":Telescope live_grep<CR>"
 lvim.keys.normal_mode["<leader>a"] = "<cmd>lua vim.diagnostic.open_float()<CR>"
 
+lvim.keys.normal_mode["<leader>e"] = "<INSERT>if err != nil {<CR>}<ESC>O"
+
 lvim.keys.normal_mode["<C-h>"] = "<C-w>h"
 lvim.keys.normal_mode["<C-j>"] = "<C-w>j"
 lvim.keys.normal_mode["<C-k>"] = "<C-w>k"
@@ -78,7 +80,7 @@ lvim.builtin.lualine.sections.lualine_z = { 'windows' }
 lvim.builtin.lualine.sections.lualine_b = { 'branch' }
 lvim.builtin.illuminate.active = false
 
-lvim.colorscheme = "rose-pine"
+lvim.colorscheme = "bamboo-multiplex"
 
 lvim.builtin.alpha.active = true
 lvim.builtin.alpha.mode = "dashboard"
@@ -121,6 +123,15 @@ lvim.plugins = {
   { "tpope/vim-abolish" },
   { 'jdhao/whitespace.nvim', event = 'VimEnter' },
   { "tpope/vim-fugitive" },
+  { "ribru17/bamboo.nvim", config = function ()
+    require('bamboo').setup {
+      transparent = true,
+      -- colors = {
+      --   background = '#1B1B1B'
+      -- }
+    }
+  end
+  },
   {
     "kylechui/nvim-surround",
     config = function()
@@ -133,25 +144,7 @@ lvim.plugins = {
       require("Navigator").setup({})
     end
   },
-  {
-    'nvim-treesitter/nvim-treesitter-context', config = function()
-      require'treesitter-context'.setup{
-        enable = true, -- Enable this plugin (Can be enabled/disabled later via commands)
-        max_lines = 0, -- How many lines the window should span. Values <= 0 mean no limit.
-        min_window_height = 0, -- Minimum editor window height to enable context. Values <= 0 mean no limit.
-        line_numbers = true,
-        multiline_threshold = 20, -- Maximum number of lines to show for a single context
-        trim_scope = 'outer', -- Which context lines to discard if `max_lines` is exceeded. Choices: 'inner', 'outer'
-        mode = 'cursor',  -- Line used to calculate context. Choices: 'cursor', 'topline'
-        -- Separator between context and content. Should be a single character string, like '-'.
-        -- When separator is set, the context will only show up when there are at least 2 lines above cursorline.
-        separator = nil,
-        zindex = 20, -- The Z-index of the context window
-        on_attach = nil, -- (fun(buf: integer): boolean) return false to disable attaching
-      }
-    end
-  }
-
+  { 'nvim-treesitter/nvim-treesitter-context' }
 }
 
 -- -- Autocommands (`:help autocmd`) <https://neovim.io/doc/user/autocmd.html>
