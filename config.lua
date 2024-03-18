@@ -88,6 +88,8 @@ lvim.builtin.terminal.active = true
 lvim.builtin.nvimtree.active = false
 lvim.builtin.nvimtree.setup.view.side = "left"
 lvim.builtin.nvimtree.setup.renderer.icons.show.git = false
+lvim.builtin.nvimtree.setup.remove_keymaps = true
+lvim.builtin.which_key.mappings["e"] = nil
 
 -- Automatically install missing parsers when entering buffer
 lvim.builtin.treesitter.auto_install = true
